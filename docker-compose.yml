@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  product_service:
+    build: ./product_service
+    container_name: product_service
+    networks:
+      - ecommerce_network
+    ports:
+      - "8001:8001"
+    environment:
+      - PRODUCT_SERVICE_URL=${PRODUCT_SERVICE_URL}
+
+  user_service:
+    build: ./user_service
+    container_name: user_service
+    networks:
+      - ecommerce_network
+    ports:
+      - "8002:8002"
+    environment:
+      - USER_SERVICE_URL=${USER_SERVICE_URL}
+
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    networks:
+      - ecommerce_network
+    ports:
+      - "8000:8000"
+    environment:
+      - PRODUCT_SERVICE_URL=${PRODUCT_SERVICE_URL}
+      - USER_SERVICE_URL=${USER_SERVICE_URL}
+
+networks:
+  ecommerce_network:
+    driver: bridge
